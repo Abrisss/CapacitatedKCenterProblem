@@ -20,21 +20,13 @@ import java.util.HashMap;
 
 public class Demo extends JApplet {
     GraphCreator graphCreator = new GraphCreator();
-    HashMap<Integer, Graph<Integer, String>> graphs;
     Graph graph;
     int actualGraph = 1;
     private final int lastGraph = 5;
 
 
     public JPanel getGraphPanel() {
-        graphs = new HashMap<>();
-        graphs.put(1, graphCreator.getFirstGraph());
-        graphs.put(2, graphCreator.getSecondGraph());
-        graphs.put(3, graphCreator.getSecondGraph());
-        graphs.put(4, graphCreator.getSecondGraph());
-        graphs.put(5, graphCreator.getFirstGraph());
-
-        graph = graphs.get(actualGraph);
+        graph = graphCreator.createGraph(actualGraph);
 
         final VisualizationViewer vv = constructVisualizationViewer();
 
@@ -129,9 +121,9 @@ public class Demo extends JApplet {
             } else if (e.getActionCommand().equals("PreviousStep") && actualGraph > 1){
                 actualGraph--;
             }
-            System.out.println(graphs.get(actualGraph));
+            System.out.println(graphCreator.createGraph(actualGraph));
             try {
-                CircleLayout l = new CircleLayout(graphs.get(actualGraph));
+                CircleLayout l = new CircleLayout(graphCreator.createGraph(actualGraph));
                 l.setInitializer(this.vv.getGraphLayout());
                 l.setSize(this.vv.getSize());
                 LayoutTransition lt = new LayoutTransition(this.vv, this.vv.getGraphLayout(), l);
