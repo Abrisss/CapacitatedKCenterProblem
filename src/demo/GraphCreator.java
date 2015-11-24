@@ -79,8 +79,8 @@ public class GraphCreator {
         vertexList.add(new Vertex("4", "4"));
         ArrayList<Edge> edgeList = new ArrayList<>();
         edgeList.add(new Edge("edge1", vertexList.get(0), vertexList.get(1), 20));
-        edgeList.add(new Edge("edge2", vertexList.get(1), vertexList.get(2), 20));
-        edgeList.add(new Edge("edge3", vertexList.get(2), vertexList.get(3), 20));
+        edgeList.add(new Edge("edge2", vertexList.get(1), vertexList.get(2), 21));
+        edgeList.add(new Edge("edge3", vertexList.get(2), vertexList.get(3), 22));
         multiPickedState.pick("1", false);
         multiPickedState.pick("2", false);
         multiPickedState.pick("3", false);

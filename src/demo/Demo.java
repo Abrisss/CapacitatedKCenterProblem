@@ -9,14 +9,16 @@ import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
 import edu.uci.ics.jung.visualization.decorators.PickableVertexPaintTransformer;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import edu.uci.ics.jung.visualization.layout.LayoutTransition;
+import edu.uci.ics.jung.visualization.renderers.DefaultVertexLabelRenderer;
 import edu.uci.ics.jung.visualization.util.Animator;
 import org.apache.commons.collections15.Transformer;
+import org.apache.commons.collections15.functors.ChainedTransformer;
+import utility.CustomLabelRenderer;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
 
 public class Demo extends JApplet {
     GraphCreator graphCreator = new GraphCreator();
@@ -82,10 +84,10 @@ public class Demo extends JApplet {
 
     private VisualizationViewer constructVisualizationViewer() {
         CircleLayout circleLayout = new CircleLayout<>(graph);
-        circleLayout.setSize(new Dimension(1366, 650));
+        circleLayout.setSize(new Dimension(1366, 580));
 
         final VisualizationViewer vv = new VisualizationViewer(circleLayout);
-        vv.setPreferredSize(new Dimension(1366, 650));
+        vv.setPreferredSize(new Dimension(1366, 580));
 
         //A csucsok beallitasa
 
@@ -93,7 +95,7 @@ public class Demo extends JApplet {
 
         //Az elek beallítasa
         float dash[] = {10.0f};
-        final Stroke edgeStroke = new BasicStroke(1.0f, BasicStroke.CAP_BUTT,
+        final Stroke edgeStroke = new BasicStroke(4.0f, BasicStroke.CAP_BUTT,
                 BasicStroke.JOIN_MITER, 10.0f, dash, 0.0f);
         Transformer<String, Stroke> edgeStrokeTransformer = new Transformer<String, Stroke>() {
             public Stroke transform(String s) {
@@ -103,8 +105,17 @@ public class Demo extends JApplet {
         vv.getRenderContext().setEdgeStrokeTransformer(edgeStrokeTransformer);
 
         //A feliratok beallitasa
-        vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
-        vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller());
+        vv.getRenderContext().setVertexLabelRenderer(new CustomLabelRenderer(Color.red));
+
+        Transformer labelTransformer = new ChainedTransformer<String,String>(new Transformer[]{
+                new ToStringLabeller<String>(),
+                new Transformer<String,String>() {
+                    public String transform(String input) {
+                        return "<html><font size=\"6\" color=\"red\">"+input;
+                    }}});
+
+        vv.getRenderContext().setVertexLabelTransformer(labelTransformer);
+        vv.getRenderContext().setEdgeLabelTransformer(labelTransformer);
         return vv;
     }
 
